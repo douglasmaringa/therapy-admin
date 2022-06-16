@@ -1,12 +1,19 @@
 import React from "react";
-import { useLocation} from 'react-router-dom';
+import { useNavigate,useLocation} from 'react-router-dom';
 import Nav from "../components/Nav";
-
+import {db} from "../base"
 
 
 function Details() {
     const {state} = useLocation();
-    
+    const navigate = useNavigate();
+
+    const update =()=>{
+      db.collection('clients').doc(state.id).update({
+          verified:!state?.verified
+       })
+       navigate("/dashboard")
+    }
    
   
   
@@ -90,6 +97,14 @@ function Details() {
                                    }
                                  
                                  <h1>Client Name:{state.name}</h1>
+                                 {
+                                   state.verified?(<>
+                                   <button class="bg-blue-500 mt-10 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={update}>Click to Unverify</button>
+                                   </>):(<>
+                                    <button class="bg-red-500 mt-10 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={update}>Click to Verify</button>
+                                   </>)
+                                 }
+                                 
         </div>
 
         </div>
